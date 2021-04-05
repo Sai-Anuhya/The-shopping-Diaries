@@ -1,0 +1,440 @@
+<html>
+<head>
+
+<style>
+.yellow {
+    background-color: yellow;
+}
+.leftPath {
+    margin-left: 100px;
+}
+.car {
+    background-color: white;
+    width: 350px;
+}
+.but {
+    margin-left: 30px;
+    background-color: transparent;
+    height: 30px;
+    color: black;
+    margin: 5px;
+    border: transparent;
+    border-radius: 5px;
+}
+.but:hover {
+    background-color: #008080;
+    
+}
+.but:active {
+    background-color: #008080;
+}
+.but:focus {
+    background-color: #008080;
+    
+}
+.rightPath {
+    margin-left: 500px;
+    margin-top: -395px;
+}
+.productCard {
+    background-color: white;
+    margin-top: 30px;
+    margin-right : 50px;
+}
+.priceBut {
+    background-color: grey;
+    color: white;
+    border: transparent;
+    border-radius: 15px;
+}
+</style>
+
+</head>
+<body>
+<div class="yellow">
+    <br/>
+    <div class="leftPath">
+        <h2> Electronics </h2>
+        <hr style="width:340px;text-align:left;margin-left:0">
+        <div class="card car">
+        <br>
+            <button class="but" (click)="showMobiles()" > Mobiles >> </button> <br/><br/>
+            <button class="but" (click)="showLaptops()"> Laptops >> </button> <br/><br/>
+            <button class="but" (click)="showTelevisions()" > Televisions >> </button> <br/><br/>
+            <button class="but" (click)="showCameras()"> Cameras >> </button> <br/><br/>
+        </div>
+        <br/><br/><br/><br/>
+    </div>
+    <div class="rightPath">
+        <div [ngSwitch]="products">
+            <div *ngSwitchCase="'mobiles'">
+                <h2> Mobiles </h2>
+                <hr style="width:800px;text-align:left;margin-left:0">
+                <label><b> Display Mobiles By </b></label>
+                <select style="width:200px; margin-left: 150px; margin-top: -30px;" class="form-control" [(ngModel)]="orderDisplay" (ngModelChange)="onOrderSelected($event)" name="orderDisplay" id="orderDisplay" placeholder="Select an Option" required>
+                          <option value="" disabled selected hidden>Select an Option</option>
+                    <option *ngFor="let order of orders" [value]="order.id">
+                        {{ order.name }}
+                    </option> 
+                </select>
+                <label style="margin-left: 370px; margin-top: -30px; position: absolute;"><b> Or Search By </b> </label>
+                <input style="width:200px; margin-left: 470px; margin-top: -33px; position: absolute; border: transparent; height: 30px;" type="text" [(ngModel)]="searchText" placeholder="   Mobile Name">
+                <div class="row card productCard">
+                    <h3 style="margin-left:30px;"> New Launches </h3><br/>
+                    <div [ngSwitch]="orderDisplay">
+                        <div *ngSwitchCase=1>
+                            <div class=" text-center col-md-4" *ngFor="let product of mobiles | filter:searchText | sortBy : 'asc' : 'priceNumber'">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 250px; width: 120px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=2>
+                            <div class=" text-center col-md-4" *ngFor="let product of mobiles | sortBy : 'desc' : 'priceNumber' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 250px; width: 120px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=3>
+                            <div class=" text-center col-md-4" *ngFor="let product of mobiles | sortBy : 'asc' : 'name' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 250px; width: 120px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=4>
+                            <div class=" text-center col-md-4" *ngFor="let product of mobiles | sortBy : 'desc' : 'name' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 250px; width: 120px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchDefault>
+                            <div class=" text-center col-md-4" *ngFor="let product of mobiles | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 250px; width: 120px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>
+                        </div>
+                    </div>                  
+                </div>
+            </div>
+            <div *ngSwitchCase="'laptops'"> 
+                <h2> Laptops </h2>
+                <hr style="width:800px;text-align:left;margin-left:0">
+                <label><b> Display Laptops By </b></label>
+                <select style="width:200px; margin-left: 150px; margin-top: -30px;" class="form-control" [(ngModel)]="orderDisplay" (ngModelChange)="onOrderSelected($event)" name="orderDisplay" id="orderDisplay" placeholder="Select an Option">
+                    <option *ngFor="let order of orders" [value]="order.id">
+                        {{ order.name }}
+                    </option> 
+                </select>
+                <label style="margin-left: 370px; margin-top: -30px; position: absolute;"><b> Or Search By </b> </label>
+                <input style="width:200px; margin-left: 470px; margin-top: -33px; position: absolute; border: transparent; height: 30px;" type="text" [(ngModel)]="searchText" placeholder="   Laptop Name">
+                <div class="row card productCard">
+                    <h3 style="margin-left:30px;"> New Launches </h3><br/>
+                    <div [ngSwitch]="orderDisplay">
+                        <div *ngSwitchCase=1>
+                            <div class=" text-center col-md-4" *ngFor="let product of laptops | sortBy : 'asc' : 'priceNumber' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=2>
+                            <div class=" text-center col-md-4" *ngFor="let product of laptops | sortBy : 'desc' : 'priceNumber' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=3>
+                            <div class=" text-center col-md-4" *ngFor="let product of laptops | sortBy : 'asc' : 'name' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=4>
+                            <div class=" text-center col-md-4" *ngFor="let product of laptops | sortBy : 'desc' : 'name' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchDefault>
+                            <div class=" text-center col-md-4" *ngFor="let product of laptops | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+            <div *ngSwitchCase="'television'">
+                <h2> Televisions </h2>
+                <hr style="width:800px;text-align:left;margin-left:0">
+                <label><b> Display Televisions By </b></label>
+                <select style="width:200px; margin-left: 150px; margin-top: -30px;" class="form-control" [(ngModel)]="orderDisplay" (ngModelChange)="onOrderSelected($event)" name="orderDisplay" id="orderDisplay" placeholder="Select an Option">
+                    <option *ngFor="let order of orders" [value]="order.id">
+                        {{ order.name }}
+                    </option> 
+                </select>
+                <label style="margin-left: 370px; margin-top: -30px; position: absolute;"><b> Or Search By </b> </label>
+                <input style="width:200px; margin-left: 470px; margin-top: -33px; position: absolute; border: transparent; height: 30px;" type="text" [(ngModel)]="searchText" placeholder="   Television Name">
+                <div class="row card productCard">
+                    <h3 style="margin-left:30px;"> New Launches </h3><br/>
+                    <div [ngSwitch]="orderDisplay">
+                        <div *ngSwitchCase=1>
+                            <div class=" text-center col-md-4" *ngFor="let product of televisions | sortBy : 'asc' : 'priceNumber' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=2>
+                            <div class=" text-center col-md-4" *ngFor="let product of televisions | sortBy : 'desc' : 'priceNumber' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=3>
+                            <div class=" text-center col-md-4" *ngFor="let product of televisions | sortBy : 'asc' : 'name' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=4>
+                            <div class=" text-center col-md-4" *ngFor="let product of televisions | sortBy : 'desc' : 'name' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchDefault>
+                            <div class=" text-center col-md-4" *ngFor="let product of televisions | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>  
+            <div *ngSwitchCase="'camera'"> 
+                <h2> Cameras </h2>
+                <hr style="width:800px;text-align:left;margin-left:0">
+                <label><b> Display Cameras By </b></label>
+                <select style="width:200px; margin-left: 150px; margin-top: -30px;" class="form-control" [(ngModel)]="orderDisplay" (ngModelChange)="onOrderSelected($event)" name="orderDisplay" id="orderDisplay" placeholder="Select an Option">
+                    <option *ngFor="let order of orders" [value]="order.id">
+                        {{ order.name }}
+                    </option> 
+                </select>
+                <label style="margin-left: 370px; margin-top: -30px; position: absolute;"><b> Or Search By </b> </label>
+                <input style="width:200px; margin-left: 470px; margin-top: -33px; position: absolute; border: transparent; height: 30px;" type="text" [(ngModel)]="searchText" placeholder="   Camera Name">
+                <div class="row card productCard">
+                    <h3 style="margin-left:30px;"> New Launches </h3><br/>
+                    <div [ngSwitch]="orderDisplay">
+                        <div *ngSwitchCase=1>
+                            <div class=" text-center col-md-4" *ngFor="let product of cameras | sortBy : 'asc' : 'priceNumber' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=2>
+                            <div class=" text-center col-md-4" *ngFor="let product of cameras | sortBy : 'desc' : 'priceNumber' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=3>
+                            <div class=" text-center col-md-4" *ngFor="let product of cameras | sortBy : 'asc' : 'name' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchCase=4>
+                            <div class=" text-center col-md-4" *ngFor="let product of cameras | sortBy : 'desc' : 'name' | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>  
+                        </div>
+                        <div *ngSwitchDefault>
+                            <div class=" text-center col-md-4" *ngFor="let product of cameras | filter:searchText">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 150px; width: 220px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>      
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
+
+<!-- 
+                        <div class=" text-center col-md-4" *ngFor="let product of mobiles">
+                            <br/>
+                            <div class="card" style="background-color:white;">
+                                <img class="card-img-top" style="height: 250px; width: 120px;" [src]="product.imagePath" alt="Card image cap">
+                                <br/><br/>
+                                <p class="card-title"><b> {{ product.name }} </b></p>
+                                <p class="card-text" style="text-align: left;"> {{ product.description }} </p>
+                                <br/>
+                                <button class="priceBut"> {{ product.price }} </button>
+                                <br/><br/><br/>
+                            </div>
+                        </div>
+-->

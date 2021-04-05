@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+.yellow {
+    background-color: yellow;
+    height: 600px;
+}
+.leftPath {
+    margin-left: 100px;
+}
+.rightPath {
+
+}
+input[type="text"] {
+    height: 25px;
+    width: 300px;
+    border: transparent;
+}
+input[type="password"] {
+    height: 25px;
+    width: 300px;
+    border: transparent;
+}
+input[type="email"] {
+    height: 25px;
+    width: 300px;
+    border: transparent;
+}
+input[type="number"] {
+    height: 25px;
+    width: 300px;
+    border: transparent;
+}
+input[type="radio"] {
+    border-color: transparent;
+}
+.vl {
+  border-left: 4px solid black;
+  height: 480px;
+  position: absolute;
+  margin-left: -3px;
+  top: 290px;
+  left: 420px;
+}
+.rightpath {
+    margin-left: 440px;
+    margin-top: -510px;
+
+}
+</style>
+<body>
+    <div class="modal fade" id="signUpModel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" data-dismiss="modal">&times;</span>
+                    <h4 class="modal-title">Please Check the Details Once</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-group">
+                        First Name : {{ signUpForm.value["firstName"] }}  <br/>
+                        Last Name : {{ signUpForm.value["lastName"] }} <br/>
+                        Gender : {{ gender }} <br/>
+                        Email ID : {{ signUpForm.value["emailId"] }} <br/>
+                        Contact Number : {{ signUpForm.value["contactNumber"] }} <br/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary btn-sm" (click)="proceedUser()" (click)="registerUser(signUpForm.value)" data-dismiss="modal">Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="yellow">
+    <br/>
+    <div class="leftPath">
+        <h2> Sign Up </h2>
+        <hr style="width:300px;text-align:left;margin-left:0">
+        <div class="form-container">
+            <form #signUpForm="ngForm" class="form-group" >
+                <div class="input-group">
+                    <input type="text" class="form-control" name="firstName" #firstName="ngModel" placeholder="First Name" ngModel required><br/>
+                    <div style="font-size: small; color: red;" *ngIf="firstName.touched && firstName.errors?.required"> First Name cannot be left blank. </div> <br/>
+
+                    <input type="text" class="form-control" name="lastName" #lastName="ngModel" placeholder="Last Name" ngModel required><br/>
+                    <div style="font-size: small; color: red;" *ngIf="lastName.touched && lastName.errors?.required"> Last Name cannot be left blank. </div> <br/>
+
+                    <input type="email" class="form-control" name="emailId" #emailId="ngModel" placeholder="Email Address" email="true" ngModel required><br/>
+                    <div style="font-size: small; color: red;" *ngIf="emailId.touched && emailId.errors?.required"> Email ID cannot be left blank. </div>
+                    <div style="font-size: small; color: red;" *ngIf="emailId.touched && emailId.errors?.email"> Provide a valid Email ID. </div> <br/>
+
+                    <input type="number" class="form-control" name="contactNumber" #contactNumber="ngModel" placeholder="Contact Number" ngModel required><br/>
+                    <div style="font-size: small; color: red;" *ngIf="contactNumber.touched && contactNumber.errors?.required"> Contact Number cannot be left blank. </div> <br/>
+
+                    <div *ngFor="let gen of genders">
+                        <input type="radio" name="genders" value="{{gen}}" (change)="radioChangeHandler($event)">
+                        <i> {{ gen }} </i> 
+                    </div>
+                    <br/>
+
+                    <input type="password" class="form-control" name="password" #password="ngModel" placeholder="Password" ngModel required><br/>
+                    <div style="font-size: small; color: red;" *ngIf="password.touched && password.errors?.required"> Password cannot be left blank. </div> <br/>
+
+                    <input type="password" class="form-control" name="confirmPassword" #confirmPassword="ngModel" placeholder="Reconfirm Password" ngModel required><br/>
+                    <div style="font-size: small; color: red;" *ngIf="confirmPassword.touched && confirmPassword.errors?.required"> Reconfirm Password cannot be left blank. </div> <br/>
+                    
+                    <button class="btn btn-primary" [disabled] = "!signUpForm.valid" (click)="showEditPopup(signUpForm)"> Sign Up Now </button><br/><br/><br/><br/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="vl"></div>
+    <div class="rightpath">
+      <div *ngIf="registeredUser == false; else elseBlock">
+        <h2> Display Area for Visually Impaired :- </h2>
+        <hr style="width:700px;text-align:left;margin-left:0">
+        <h3>{{ signUpForm.value["firstName"] }}</h3>
+        <h3>{{ signUpForm.value["lastName"] }}</h3>
+        <h3>{{ signUpForm.value["emailId"] }}</h3>
+        <h3>{{ signUpForm.value["contactNumber"] }}</h3>
+        <h3>{{ gender }}</h3>
+      </div>
+
+      <ng-template #elseBlock>
+        <h2> Registration Successful. </h2>
+        <hr style="width:700px;text-align:left;margin-left:0">
+        <b>First Name : {{ signUpForm.value["firstName"] }}  <br/>
+        Last Name : {{ signUpForm.value["lastName"] }} <br/>
+        Gender : {{ gender }} <br/>
+        Email ID : {{ signUpForm.value["emailId"] }} <br/>
+        Contact Number : {{ signUpForm.value["contactNumber"] }} <br/></b>
+      </ng-template>
+        
+    </div>
+</div>
+
+</body>
+</html> 
